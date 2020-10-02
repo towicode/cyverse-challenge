@@ -25,3 +25,9 @@ Once the mount is running, the kub cluster should be able to be created by runni
 
 
 ```kubectl apply -f main.yaml```
+
+
+
+
+Quick Concession: 
+I'm using the demo nats server instead of the one actually hosted by the kubernets cluster.
