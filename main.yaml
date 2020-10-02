@@ -1,0 +1,39 @@
+# hello-kubernetes.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8222
+  selector:
+    app: hello-kubernetes
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-kubernetes
+spec:
+  volumes:
+    - name: test-volume
+      hostPath:
+        path: /mnt1/out
+  containers:
+  - name: publisher
+    image: toddwickizer/publisher:2
+  - name: subscriber
+    image: toddwickizer/subscriber:2
+    volumeMounts:
+      - mountPath: '/var/www/html'
+        name: test-volume  
+  - name: hello-kubernetes
+    image: nats:2.1.8
+    ports:
+    - containerPort: 4222
+      name: intra-node
+    - containerPort: 6222
+      name: tls-intra-node
+    - containerPort: 8222
+      name: access
